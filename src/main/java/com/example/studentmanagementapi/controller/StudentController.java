@@ -2,7 +2,7 @@ package com.example.studentmanagementapi.controller;
 
 import com.example.studentmanagementapi.dao.AddStudent;
 import com.example.studentmanagementapi.dto.Student;
-import com.example.studentmanagementapi.service.StudentService;
+import com.example.studentmanagementapi.service.impl.StudentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,18 +15,18 @@ import java.util.Optional;
 @RequestMapping("/api/students")
 public class StudentController {
     @Autowired
-    private StudentService studentService;
+    private StudentServiceImpl studentServiceImpl;
 
     // Implement endpoints for your menu options here
 
     @GetMapping
     public List<Student> getAllStudents() {
-        return studentService.getAllStudents();
+        return studentServiceImpl.getAllStudents();
     }
 
     @GetMapping("/{id}")
     public Optional<Student> getStudentById(@PathVariable Long id) {
-        return studentService.getStudentById(id);
+        return studentServiceImpl.getStudentById(id);
     }
 
 //    @PostMapping
@@ -62,29 +62,29 @@ public class StudentController {
         }
 
         // Nếu thông tin sinh viên hợp lệ, lưu hoặc cập nhật và trả về sinh viên đã được lưu hoặc cập nhật
-        Student savedStudent = studentService.saveOrUpdateStudent(student);
+        Student savedStudent = studentServiceImpl.saveOrUpdateStudent(student);
         return ResponseEntity.ok(savedStudent);
     }
 
 
     @DeleteMapping("/{id}")
     public void deleteStudentById(@PathVariable Long id) {
-        studentService.deleteStudentById(id);
+        studentServiceImpl.deleteStudentById(id);
     }
 
     @GetMapping("/search")
     public List<Student> findStudentsByName(@RequestParam String name) {
-        return studentService.findStudentsByName(name);
+        return studentServiceImpl.findStudentsByName(name);
     }
 
     @GetMapping("/sort/gpa")
     public List<Student> sortByGPA() {
-        return studentService.sortByGPA();
+        return studentServiceImpl.sortByGPA();
     }
 
     @GetMapping("/sort/name")
     public List<Student> sortByName() {
-        return studentService.sortByName();
+        return studentServiceImpl.sortByName();
     }
 }
 
