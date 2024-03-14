@@ -4,6 +4,9 @@ import com.example.studentmanagementapi.dao.AddStudent;
 import com.example.studentmanagementapi.dto.Student;
 import com.example.studentmanagementapi.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -16,15 +19,14 @@ public class StudentServiceImpl implements com.example.studentmanagementapi.serv
     private StudentRepository studentRepository;
 
     // Implement business logic for your menu options here
-
+    @Cacheable("students")
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
     }
-
     public Optional<Student> getStudentById(Long id) {
         return studentRepository.findById(id);
     }
-
+    @CacheEvict(value = "students", allEntries = true)
     public Student saveOrUpdateStudent(AddStudent addStudent) {
         Student student = new Student();
         student.setName(addStudent.getName());
@@ -46,15 +48,15 @@ public class StudentServiceImpl implements com.example.studentmanagementapi.serv
         }
         return studentRepository.save(student);
     }
-
+    @CacheEvict(value = "students", allEntries = true)
     public void deleteStudentById(Long id) {
         studentRepository.deleteById(id);
     }
-
     public List<Student> findStudentsByName(String name) {
         return studentRepository.findByName(name);
     }
 
+    @Cacheable("studentsByGPA")
     public List<Student> sortByGPA() {
         List<Student> students = studentRepository.findAll();
 
@@ -64,6 +66,7 @@ public class StudentServiceImpl implements com.example.studentmanagementapi.serv
         return students;
     }
 
+    @Cacheable("studentsByName")
     public List<Student> sortByName() {
         List<Student> students = studentRepository.findAll();
 
