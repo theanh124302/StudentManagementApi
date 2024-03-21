@@ -1,16 +1,13 @@
 package com.example.studentmanagementapi.dto;
+import jakarta.persistence.*;
 import lombok.*;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Builder
-@Table(name ="student")
+@Table(name ="student", indexes = @Index(name = "idx_name", columnList = "name"))
 @Entity
 public class Student {
     @Id
