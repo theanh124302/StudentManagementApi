@@ -47,15 +47,21 @@ public class JwtServiceImpl implements JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
+//    private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
+//        final Claims claims = extractAllClaims(token);
+//        return claimsResolvers.apply(claims);
+//    }
+//
+//    private Claims extractAllClaims(String token) {
+//        return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token)
+//                .getBody();
+//    }
+
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
-        final Claims claims = extractAllClaims(token);
+        final Claims claims = Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody();
         return claimsResolvers.apply(claims);
     }
 
-    private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token)
-                .getBody();
-    }
 
     @Override
     public boolean isTokenValid(String token, UserDetails userDetails) {

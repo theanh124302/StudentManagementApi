@@ -27,7 +27,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public AuthenticationResponse signIn(SignInRequest request) {
-        System.out.println(request.getUsername());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         var user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
@@ -42,12 +41,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User signUp(SignUpRequest request) {
-        System.out.println(request.getEmail());
         User user = new User();
         user.setEmail(request.getEmail());
         user.setName(request.getName());
         user.setUsername(request.getUsername());
-        //user.setPassword(request.getPassword());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setPhoneNumber(request.getPhoneNumber());
         return userRepository.save(user);
